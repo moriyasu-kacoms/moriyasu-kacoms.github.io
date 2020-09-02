@@ -1,9 +1,9 @@
 <!doctype HTML>
 <html>
 <!-- A-Frame ライブラリの読み込み -->
-<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://aframe.io/releases/master/aframe.min.js"></script>
 <!-- AR.js ライブラリの読み込み -->
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/0.8.2/aframe/build/aframe-ar.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.js"></script>
 
 <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs="debugUIEnabled:false;trackingMethod:best;" vr-mode-ui="enabled: false">
@@ -18,11 +18,14 @@
         <a-entity camera></a-entity>
     </a-scene>
 
-    <!-- <script>
+    <script>
         var objModel = document.getElementById("santa");
         objModel.addEventListener("click", (evt) => {
-            objModel.setAttribute("position", evt.);
+            var objPos;
+            objPos = objModel.getAttribute("position");
+            objPos.getAttribute("position").point.x += 2;
+            objModel.setAttribute("position", objPos);
         })
-    </script> -->
+    </script>
 </body>
 </html>
