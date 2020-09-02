@@ -1,31 +1,232 @@
 <!doctype HTML>
 <html>
-<!-- A-Frame ライブラリの読み込み -->
-<script src="https://aframe.io/releases/master/aframe.min.js"></script>
-<!-- AR.js ライブラリの読み込み -->
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.js"></script>
 
-<body style='margin : 0px; overflow: hidden;'>
-    <a-scene embedded arjs="debugUIEnabled:false;trackingMethod:best;" vr-mode-ui="enabled: false">
-        <a-assets>
-            <a-asset-item id="santa-obj" src="model_obj/santa/santa.obj"></a-asset-item>
-            <a-asset-item id="santa-mtl" src="model_obj/santa/santa.mtl"></a-asset-item>
-        </a-assets>
-        <a-marker preset="hiro">
-            <a-obj-model id="santa" src="#santa-obj" mtl="#santa-mtl" position="0 0 0" scale="0.5 0.5 0.5" rotation="-90 0 0"></a-obj-model>
-            <a-text value="Merry X'mas!!!" position="0 1.3 0" align="center"></a-text>
-        </a-marker>        
-        <a-entity camera></a-entity>
-    </a-scene>
+<head>
+    <meta charset="UTF-8">
+
+    <!-- 
+        This sample should work on Firefox and Chrome on Windows.
+        On Android, there are some limitations (observed on Nexus6).
+        - on Chrome, works only in landscape orientation (and only when loaded in landscape)
+        - on Firefox, the pinch-to-zoom gesture doesn't work, because pointer-events are not supported (yet)
+
+        IMPORTANT: 
+        This sample loads external resources via XHR and will NOT work with file:// protocol due to browser security.
+        Use the included python server for local viewing.
+    -->
+
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
     <script>
-        var objModel = document.getElementById("santa");
-        objModel.addEventListener("click", (evt) => {
-            var objPos;
-            objPos = objModel.getAttribute("position");
-            objPos.getAttribute("position").point.x += 2;
-            objModel.setAttribute("position", objPos);
-        })
+        // This is supposed to alert the developer to an error on mobile devices where debugging is difficult
+        window.onerror = function () {
+            alert("Error");
+            document.body.innerText = JSON.stringify(Array.from(arguments));
+        };
+
+        // Controls the window content
+        // This is a mainly workaround for tracking not working correcly in portrait mode on chrome.
+        // It also shows a warning when the page was not loaded from a server.
+        window.addEventListener("DOMContentLoaded", () => {
+            "use strict";
+
+            const $ = document.querySelector.bind(document);
+
+            // get the templates
+            const scene = $("#ar-scene").content;
+            const protoWarn = $("#protocol-warning").content;
+            const landscapeWarn = $("#landscape-warning").content;
+
+            // function to replace body content
+            const setContent = (content) => {
+                document.body.innerHTML = '';
+                document.body.appendChild(content.cloneNode(true));
+            };
+
+            const init = () => {
+                if (screen.orientation.type.startsWith("landscape")) {
+                    setContent(scene);
+                } else {
+                    setContent(landscapeWarn);
+                    $("#landscape-btn").addEventListener("click", () => document.body.requestFullscreen({
+                        navigationUI: 'hide'
+                    }));
+                }
+            };
+
+            if (window.location.protocol === "file:") {
+                // When opening the html file directly from the file system, 
+                // XHR and other things will not work because of browser security.
+                setContent(protoWarn);
+            } else {
+                window.addEventListener("fullscreenerror", (ev) => window.onerror(ev));
+
+                window.addEventListener("fullscreenchange", (ev) => {
+                    if (document.fullscreenElement) {
+                        console.log("entered fullscreen");
+                        screen.orientation.lock("landscape");
+                    } else {
+                        console.log("exited fullscreen");
+                        screen.orientation.unlock();
+                    }
+                });
+
+                window.addEventListener("orientationchange", init);
+                init();
+            }
+        });
     </script>
-</body>
+
+    <script src="../upstream/aframe-1.0.4/dist/aframe-v1.0.4.js"></script>
+
+    <!-- For animation-mixer -->
+    <script src="../upstream/aframe-extras/dist/aframe-extras.loaders.js"></script>
+
+    <script src="../upstream/AR.js/aframe/build/aframe-ar.js"></script>
+
+    <script>
+        // just log markers being found and lost
+        AFRAME.registerComponent('markerlog', {
+            init: function () {
+                const scene = document.querySelector("a-scene");
+                scene.addEventListener("markerFound", (ev, target) => console.log(ev, target));
+                scene.addEventListener("markerLost", (ev, target) => console.log(ev, target));
+            }
+        });
+
+        // interaction logic. There can be only one!
+        AFRAME.registerComponent('interaction', {
+
+            init: function () {
+                console.log("cursor indicator init");
+                const self = this;
+                const text = document.getElementById("text");
+
+                // restore the default visibility state when the marker is found/lost
+                window.addEventListener("markerFound", () => text.object3D.visible = !(self.el.object3D.visible = true));
+                window.addEventListener("markerLost", () => text.object3D.visible = false);
+
+                // click toggles between kacoms logo and text
+                window.addEventListener("click", () => {
+                    const state = self.el.object3D.visible;
+                    self.el.object3D.visible = !state;
+                    text.object3D.visible = state;
+                });
+
+                // mouse wheel scales the kacoms logo
+                window.addEventListener('wheel', (ev) => self.el.object3D.scale.multiplyScalar(ev.deltaY < 0 ? 1.03 : 0.97));
+
+
+                // Everything from here is to handle pinch-zoom on mobile
+                // This will NOT work on firefox for android at the time of writing, because the engine version is quite old and does not support the pointer-events specification
+
+                // Global vars to cache event state
+                let evCache = [];
+                let prevDiff = -1;
+
+                function pointerdown_handler(ev) {
+                    // The pointerdown event signals the start of a touch interaction.
+                    // This event is cached to support 2-finger gestures
+                    evCache.push(ev);
+                    // console.log("pointerDown", ev);
+                }
+
+                function pointermove_handler(ev) {
+                    // This function implements 2-pointer pinch to zoom. 
+                    //console.log("pointerMove", ev);
+
+                    // Find this event in the cache and update its record with this event
+                    for (let i = 0; i < evCache.length; i++) {
+                        if (ev.pointerId == evCache[i].pointerId) {
+                            evCache[i] = ev;
+                            break;
+                        }
+                    }
+
+                    // If two pointers are down, check for pinch gestures
+                    if (evCache.length == 2) {
+                        // Calculate the distance between the two pointers
+                        const curDiff = Math.hypot(evCache[0].clientX - evCache[1].clientX, evCache[0].clientY - evCache[1].clientY);
+
+                        if (prevDiff > 0) {
+                            const move = curDiff - prevDiff;
+                            self.el.object3D.scale.multiplyScalar(1 + move / 150);
+                        }
+
+                        // Cache the distance for the next move event 
+                        prevDiff = curDiff;
+                    }
+                }
+
+                function pointerup_handler(ev) {
+                    //console.log(ev.type, ev);
+                    for (let i = 0; i < evCache.length; i++) {
+                        if (evCache[i].pointerId == ev.pointerId) {
+                            evCache.splice(i, 1);
+                            break;
+                        }
+                    }
+
+                    // If the number of pointers down is less than two then reset diff tracker
+                    if (evCache.length < 2) {
+                        prevDiff = -1;
+                    }
+                }
+
+                window.addEventListener("pointerdown", pointerdown_handler);
+                window.addEventListener("pointermove", pointermove_handler);
+                window.addEventListener("pointerup", pointerup_handler);
+                window.addEventListener("pointerout", pointerup_handler);
+                window.addEventListener("pointercancel", pointerup_handler);
+                window.addEventListener("pointerleave", pointerup_handler);
+            },
+        });
+
+    </script>
+
+    <template id="protocol-warning">
+        <h1>This must be used from a webserver. <i>file://</i> protocol will not work!</h1>
+    </template>
+
+    <template id="landscape-warning">
+        <h1>Use in landscape orientation!</h1>
+        <button id="landscape-btn">Switch to landscape</button>
+    </template>
+
+    <template id="ar-scene">
+        <!-- we add detectionMode and matrixCodeType to tell AR.js to recognize barcode markers -->
+        <a-scene embedded markerlog
+            arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
+
+            <a-assets>
+                <!-- 
+                Important notes: 
+                - Ambient lights don't affect "metal" materials. Those need an environment map. 
+                - For GLTF files, only a single scene seems to be supported (but supporting multiple scenes looks like it would only be a minor modification).
+                  There is a "gltf-part" component that allows easy extraction of named parts from a GLTF file (superframe/components/gltf-part/dist/aframe-gltf-part-component.js). 
+            -->
+
+                <a-asset-item id="kacoms-logo" src="KacomsLogo.gltf"></a-asset-item>
+                <a-asset-item id="kacoms-text" src="KacomsText.gltf"></a-asset-item>
+            </a-assets>
+
+            <!-- marker to be detected -->
+            <a-marker emitevents="true" id="animated-marker" size="1" type='barcode' value='6'>
+                <!-- What is to be displayed when the marker is found -->
+                <a-entity id="logo" interaction animation-mixer gltf-model="#kacoms-logo" scale="0.15 0.15 0.15">
+                </a-entity>
+            </a-marker>
+
+            <!-- The scene camera. It seems that this camera is manipulated by AR.js -->
+            <a-entity camera>
+                <!-- This is displayed relative to the camera -->
+                <a-entity id="text" gltf-model="#kacoms-text" scale="0.5 0.5 0.5" position="0 0 -5" visible="false">
+                </a-entity>
+            </a-entity>
+        </a-scene>
+    </template>
+</head>
+
+<body style='margin : 0px; overflow: hidden;'></body>
+
 </html>
