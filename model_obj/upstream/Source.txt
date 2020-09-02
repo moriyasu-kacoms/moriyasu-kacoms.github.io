@@ -1,5 +1,0 @@
-aframe-1.0.4   https://aframe.io/
-aframe-extras  https://github.com/donmccurdy/aframe-extras
-AR.js          https://github.com/AR-js-org/AR.js
-superframe     https://github.com/supermedium/superframe
-three.js-r115  https://threejs.org/
