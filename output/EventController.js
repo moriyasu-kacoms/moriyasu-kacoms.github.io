@@ -1,9 +1,8 @@
-$("#santa").on("click", function()  {
+document.getElementById("santa").onclick = function () {
     var santaModel = document.getElementById("santa");
     if (santaModel != null) {
         santaModel.setAttribute("position", "0 0 100");
         santaModel.setAttribute("rotation", "-90 0 90");
     }
-});
-
+};
 //# sourceMappingURL=EventController.js.map
