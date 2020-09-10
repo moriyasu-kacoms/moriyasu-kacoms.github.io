@@ -1,4 +1,4 @@
-AFRAME.registerComponent('objClick2', {
+AFRAME.registerComponent('markerhandler', {
     init: function(){
         const marker = document.getElementById("marker_hiro");
         const objModel = document.getElementById("santa");
