@@ -5,8 +5,8 @@ AFRAME.registerComponent('markerhandler', {
         const objText = document.getElementById("debug_text");
 
         if (objText != null){
-            objText.setAttribute('value', "GetElement");
-            //objText.textContent = "GetQuery";
+            //objText.setAttribute('value', "GetElement");
+            objText.textContent = "GetQuery";
         }
 
         marker.addEvemtListener('click', function(evt, target){
