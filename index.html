@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
 <!-- A-Frame ライブラリの読み込み -->
-<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+<script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
 <!-- AR.js ライブラリの読み込み -->
 <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script>
 <!--イベント処理のJavaScript-->
@@ -23,7 +23,7 @@
 
 <body style='margin:0px; overflow:hidden;'>
 <!-- こっからA-Frame -->
-<a-scene embedded arjs="debugUIEnabled:true;trackingMethod:best;" vr-mode-ui="enabled: false">
+<a-scene embedded arjs="debugUIEnabled:false;trackingMethod:best;" vr-mode-ui="enabled: false">
     <!-- オブジェクトファイルとマテリアルファイルを読み込む -->
     <a-assets>
         <a-asset-item id="santa-obj" src="model_obj/santa/santa.obj"></a-asset-item>

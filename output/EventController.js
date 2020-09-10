@@ -1,6 +1,6 @@
 AFRAME.registerComponent('objClick2', {
     init: function(){
-        const marker = document.querySelector("#marker_hiro");
+        const marker = document.getElementById("marker_hiro");
         const objModel = document.getElementById("santa");
         const objText = document.getElementById("debug_text");
 
