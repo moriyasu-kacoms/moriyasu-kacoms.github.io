@@ -1,8 +1,8 @@
 AFRAME.registerComponent('objClick2', {
     init: function(){
         const marker = document.querySelector("#marker_hiro");
-        const objModel = document.querySelector("#santa");
-        const objText = document.querySelector("#debug_text");
+        const objModel = document.getElementById("santa");
+        const objText = document.getElementById("debug_text");
 
         if (objText != null){
             objText.textContent = "GetQuery";
