@@ -10,7 +10,7 @@ AFRAME.registerComponent('objClick2', {
 
         marker.addEvemtListener('click', function(evt, target){
             const objScale = objModel.getAttribute('scale');
-            Object.keys(scale).forEach((key) => scale[key] = scale[key] + 1);
+            Object.keys(scale).forEach((key) => scale[key] = scale[key] + 0.5);
             objModel.setAttribute('scale', objScale);
         });
     }
