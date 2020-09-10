@@ -2,12 +2,15 @@ AFRAME.registerComponent('objClick2', {
     init: function(){
         const marker = document.querySelector("#marker_hiro");
         const objModel = document.querySelector("#santa");
+        const objText = document.querySelector("#debug_text");
 
-        marker.addEvemtListener('click', function(evt){
+        if (objText != null){
+            objText.textContent = "GetQuery";
+        }
+
+        marker.addEvemtListener('click', function(evt, target){
             const objScale = objModel.getAttribute('scale');
-            objScale.x += 1;
-            objScale.y += 1;
-            objScale.z += 1;
+            Object.keys(scale).forEach((key) => scale[key] = scale[key] + 1);
             objModel.setAttribute('scale', objScale);
         });
     }
