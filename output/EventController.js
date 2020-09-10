@@ -4,11 +4,11 @@ AFRAME.registerComponent('markerhandler', {
         const objModel = document.getElementById("santa");
         const objText = document.getElementById("debug_text");
 
-        if (objText != null){
+/*        if (objText != null){
             objText.setAttribute('value', "GetElement");
             //objText.textContent = "GetQuery";
         }
-
+*/
         marker.addEvemtListener('click', function(evt, target){
             const objScale = objModel.getAttribute('scale');
             Object.keys(scale).forEach((key) => scale[key] = scale[key] + 0.5);
