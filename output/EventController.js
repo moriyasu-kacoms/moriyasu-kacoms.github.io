@@ -1,8 +1,15 @@
-document.getElementById("santa").onclick = function () {
-    var santaModel = document.getElementById("santa");
-    if (santaModel != null) {
-        santaModel.setAttribute("position", "0 0 100");
-        santaModel.setAttribute("rotation", "-90 0 90");
+AFRAME.registerComponent('objClick2', {
+    init: function(){
+        const marker = document.querySelector("#marker_hiro");
+        const objModel = document.querySelector("#santa");
+
+        marker.addEvemtListener('click', function(evt){
+            const objScale = objModel.getAttribute('scale');
+            objScale.x += 1;
+            objScale.y += 1;
+            objScale.z += 1;
+            objModel.setAttribute('scale', objScale);
+        });
     }
-};
+});
 //# sourceMappingURL=EventController.js.map
