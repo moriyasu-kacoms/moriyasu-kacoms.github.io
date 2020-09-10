@@ -15,4 +15,5 @@ AFRAME.registerComponent('objClick2', {
         });
     }
 });
+
 //# sourceMappingURL=EventController.js.map
