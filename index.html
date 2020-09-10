@@ -10,10 +10,11 @@
     // just log markers being found and lost
     AFRAME.registerComponent('objClick', {
         onclick: function(){
-            //var santaModel = document.getElementById("santa");
-            var modelElement = document.createElement('a-obj-model');
-            modelElement.setAttribute('scale', {x: 1, y: 1, z: 1});
-            sceneElement.appendChild(modelElement);
+            var santaModel = document.getElementById("santa");
+            santaModel.setAttribute('scale', {x: 1, y: 1, z: 1});
+            //var modelElement = document.createElement('a-obj-model');
+            //modelElement.setAttribute('scale', {x: 1, y: 1, z: 1});
+            //sceneElement.appendChild(modelElement);
         }
     });
 </script>
