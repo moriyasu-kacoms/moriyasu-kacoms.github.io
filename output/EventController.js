@@ -5,14 +5,16 @@ AFRAME.registerComponent('markerhandler', {
         const objText = document.getElementById("debug_text");
 
         if (objText != null){
-            //objText.setAttribute('value', "GetElement");
-            objText.textContent = "GetQuery";
+            objText.setAttribute('value', "GetElement");
+            //objText.textContent = "GetQuery";
         }
 
-        marker.addEvemtListener('click', function(evt, target){
+        marker.addEventListener('click', function(evt, target){
             const objScale = objModel.getAttribute('scale');
             Object.keys(scale).forEach((key) => scale[key] = scale[key] + 0.5);
             objModel.setAttribute('scale', objScale);
+
+            objText.setAttribute('value', "Click Event");
         });
     }
 });
