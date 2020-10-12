@@ -12,7 +12,7 @@
       <a-asset-item id="SamoGate" src="moriyasu-kacoms.github.io\model_obj\SamoGateSample\BeedRoomPebble.glb"></a-asset-item>
     </a-assets>
 	  <!-- デバッグ用の画面表示、VR用のボタンをそれぞれ非表示に -->
-    <a-scene embedded arjs="debugUIEnabled:false;" vr-mode-ui="enabled: false">
+    <a-scene embedded arjs="debugUIEnabled:false;" vr-mode-ui="enabled: false" renderer="logarithmicDepthBuffer: true;">
       <!-- 今回作成した『.patt』ファイルを読み込む -->
       <a-marker type='pattern' url='moriyasu-kacoms.github.io\marker\pattern-corporate_logo_kacoms.patt'>
         <!-- 動画再生 -->
