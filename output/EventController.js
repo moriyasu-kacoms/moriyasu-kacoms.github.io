@@ -4,11 +4,6 @@ AFRAME.registerComponent('markerhandler', {
         const objModel = document.getElementById("santa");
         const objText = document.getElementById("debug_text");
 
-        const sceneEl = document.querySelector('a-scene');
-        sceneEl.addEventListener('loaded', () => {
-            sceneEl.camera = new THREE.PerspectiveCamera();
-        });
-        
         if (objText != null){
             objText.setAttribute('value', "GetElement");
             //objText.textContent = "GetQuery";

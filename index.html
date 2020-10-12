@@ -31,5 +31,12 @@
       v.play();
       });
     </script>
+
+    <script>
+      const sceneEl = document.querySelector('a-scene');
+      sceneEl.addEventListener('loaded', () => {
+      sceneEl.camera = new THREE.PerspectiveCamera();
+      });
+    </script>
   </body>
 </html>
