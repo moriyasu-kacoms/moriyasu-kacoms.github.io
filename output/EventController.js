@@ -17,6 +17,11 @@ AFRAME.registerComponent('markerhandler', {
 
             objText.setAttribute('value', "Click Event");
         });
+
+        window.addEventListener('click', function () {
+            var v = document.querySelector('#ar-video');
+            v.play();
+        });
     }
 });
 
