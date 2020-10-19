@@ -17,12 +17,6 @@ AFRAME.registerComponent('markerhandler', {
 
             objText.setAttribute('value', "Click Event");
         });
-
-        //ウィンドウのクリックイベント
-        window.addEventListener('click', function () {
-            var v = document.querySelector('#ar-video');
-            v.play();
-            });
     }
 });
 
