@@ -9,6 +9,7 @@ AFRAME.registerComponent('markerhandler', {
             //objText.textContent = "GetQuery";
         }
 
+        //markerのクリックイベント
         marker.addEventListener('click', function(evt, target){
             //const objScale = objModel.getAttribute('scale');
             //Object.keys(scale).forEach((key) => scale[key] = scale[key] + 0.5);
@@ -16,6 +17,12 @@ AFRAME.registerComponent('markerhandler', {
 
             objText.setAttribute('value', "Click Event");
         });
+
+        //ウィンドウのクリックイベント
+        window.addEventListener('click', function () {
+            var v = document.querySelector('#ar-video');
+            v.play();
+            });
     }
 });
 
