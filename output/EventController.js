@@ -13,15 +13,12 @@
 //
 AFRAME.registerComponent('cursor-listener',{
     init: function(){
+        //動画オブジェクトにイベントを設定
         //this.el.addEventListener('click', onClick_video(evt));
         this.el.addEventListener('click', function(evt){
             var v = document.querySelector('#ar-video');
             v.play();
         });
-
-        //動画オブジェクトにイベントを設定
-        //let videoPlayer = document.querySelector('#ar-video');
-        //videoPlayer.addEventListener('click', onClick_video(videoPlayer));
     }
 });
 
