@@ -1,4 +1,4 @@
-AFRAME.registerComponent('markerhandler', {
+/* AFRAME.registerComponent('markerhandler', {
     init: function(){
         let el = this.el;
         const marker = document.getElementById("marker_hiro");
@@ -8,7 +8,7 @@ AFRAME.registerComponent('markerhandler', {
             objText.setAttribute('value', "GetElement");
         }
     }
-});
+}); */
 
 //
 AFRAME.registerComponent('cursor-listener',{
@@ -17,7 +17,6 @@ AFRAME.registerComponent('cursor-listener',{
         this.el.addEventListener('click', function(evt){
             var v = document.querySelector('#ar-video');
             v.play();
-            this.play();
         });
 
         //動画オブジェクトにイベントを設定
