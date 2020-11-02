@@ -14,9 +14,10 @@ AFRAME.registerComponent('markerhandler', {
 AFRAME.registerComponent('cursor-listener',{
     init: function(){
         //this.el.addEventListener('click', onClick_video(evt));
-        this.el.addEventListener('click', function(){
+        this.el.addEventListener('click', function(evt){
             var v = document.querySelector('#ar-video');
             v.play();
+            this.play();
         });
 
         //動画オブジェクトにイベントを設定
