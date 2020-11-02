@@ -11,13 +11,12 @@ AFRAME.registerComponent('markerhandler', {
 });
 
 //
-AFRAME.registerComponent('clickLithner',{
+AFRAME.registerComponent('cursor-listener',{
     init: function(){
-        //
         //this.el.addEventListener('click', onClick_video(evt));
         this.el.addEventListener('click', function(){
-            let videoPlayer = document.querySelector('#ar-video');
-            videoPlayer.play();
+            var v = document.querySelector('#ar-video');
+            v.play();
         });
 
         //動画オブジェクトにイベントを設定
