@@ -7,7 +7,12 @@ AFRAME.registerComponent('markerhandler', {
         if (objText != null){
             objText.setAttribute('value', "GetElement");
         }
+    }
+});
 
+//
+AFRAME.registerComponent('clickLithner',{
+    init: function(){
         //動画オブジェクトにイベントを設定
         let videoPlayer = document.querySelector('#ar-video');
         videoPlayer.addEventListener('click', onClick_video(videoPlayer));
