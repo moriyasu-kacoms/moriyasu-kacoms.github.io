@@ -14,11 +14,11 @@ AFRAME.registerComponent('markerhandler', {
 AFRAME.registerComponent('clickLithner',{
     init: function(){
         //
-        this.el.addEventListener('click', onClick_video(evt));
-        //this.el.addEventListener('click', function(){
-        //    let videoPlayer = document.querySelector('#ar-video');
-        //    videoPlayer.play();
-        //});
+        //this.el.addEventListener('click', onClick_video(evt));
+        this.el.addEventListener('click', function(){
+            let videoPlayer = document.querySelector('#ar-video');
+            videoPlayer.play();
+        });
 
         //動画オブジェクトにイベントを設定
         //let videoPlayer = document.querySelector('#ar-video');
