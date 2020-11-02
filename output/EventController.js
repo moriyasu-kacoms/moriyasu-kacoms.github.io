@@ -15,7 +15,7 @@ AFRAME.registerComponent('clickLithner',{
     init: function(){
         //
         let videoPlayer = document.querySelector('#ar-video');
-        this.el.addEventListener('click', onClick_video(videoPlayer));
+        this.el.addEventListener('click', onClick_video(evt));
 
         //動画オブジェクトにイベントを設定
         //let videoPlayer = document.querySelector('#ar-video');
@@ -25,7 +25,7 @@ AFRAME.registerComponent('clickLithner',{
 
  //動画クリックイベント
 function onClick_video(videoPlayer){
-    videoPlayer.play();
+    this.play()
 }
 
 //# sourceMappingURL=EventController.js.map
